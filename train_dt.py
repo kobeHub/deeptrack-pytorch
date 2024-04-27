@@ -20,8 +20,9 @@ def main(argv):
     del argv
     param = config.PARAM
     print(f'Parameters: {param}')
-    batch_size = 32
+    batch_size = 8
     epochs = 50
+    seq_len = 100
     dataset = SensorData(FLAGS.data_file, param)
     data_loader = DataLoader(dataset, batch_size=batch_size, shuffle=False)
     print(
@@ -31,9 +32,9 @@ def main(argv):
     img_dir = model_dir / "imgs"
     img_dir.mkdir(exist_ok=True, parents=True)
 
-    model = DeepTrackingRNN(width=50, height=50, num_units=100)
+    model = DeepTrackingRNN(width=50, height=50, num_units=seq_len)
     model.to(DEVICE)
-    pms.summary(model, torch.zeros(32, 100, 2, 50, 50).to(DEVICE),
+    pms.summary(model, torch.zeros(batch_size, seq_len, 2, 50, 50).to(DEVICE),
                 batch_size=batch_size,
                 show_input=True,
                 show_hierarchical=True,

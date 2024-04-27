@@ -3,7 +3,7 @@ channels:
   - conda-forge
   - pytorch
   - nvidia
-  - defaultss
+  - defaults
 dependencies:
   - python=3.10.14
   - pytorch=2.1.2
