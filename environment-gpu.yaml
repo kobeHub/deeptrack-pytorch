@@ -1,7 +1,9 @@
 name: tracker
 channels:
   - conda-forge
-  - defaults
+  - pytorch
+  - nvidia
+  - defaultss
 dependencies:
   - python=3.10.14
   - pytorch=2.1.2
