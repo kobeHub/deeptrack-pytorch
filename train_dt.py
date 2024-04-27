@@ -33,12 +33,12 @@ def main(argv):
     img_dir.mkdir(exist_ok=True, parents=True)
 
     model = DeepTrackingRNN(width=50, height=50, num_units=seq_len)
-    model.to(DEVICE)
-    pms.summary(model, torch.zeros(batch_size, seq_len, 2, 50, 50).to(DEVICE),
+    pms.summary(model, torch.zeros(batch_size, seq_len, 2, 50, 50),
                 batch_size=batch_size,
                 show_input=True,
                 show_hierarchical=True,
                 print_summary=True)
+    model.to(DEVICE)
     criterion = torch.nn.BCELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
