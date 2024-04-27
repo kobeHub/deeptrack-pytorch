@@ -1,0 +1,28 @@
+name: tracker
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10.14
+  - pytorch=2.1.2
+  - pytorch-cuda=11.8
+  - pytorch-model-summary=0.1.1
+  - absl-py=2.1.0
+  - hdf5=1.14.3
+  - importlib-metadata=7.1.0
+  - matplotlib=3.8.3
+  - pthread-stubs=0.4
+  - pygpu=0.7.6
+  - pyparsing=3.1.2
+  - pytz=2024.1
+  - readline=8.2
+  - scipy=1.13.0
+  - six=1.16.0
+  - sympy=1.12
+  - tapi=1100.0.11
+  - theano=1.0.5
+  - tk=8.6.13
+  - torchfile=0.1.0
+  - tornado=6.4
+  - tqdm=4.66.2
+  - typing_extensions=4.11.0
