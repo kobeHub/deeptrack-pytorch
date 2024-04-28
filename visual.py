@@ -1,3 +1,4 @@
+import matplotlib.animation as animation
 from matplotlib import pyplot as plt
 
 
@@ -49,6 +50,29 @@ def visual_multiple_samples(imgs):
     plt.tight_layout()
     plt.show()
     fig.savefig('results/imgs/input_seq.png', dpi=300)
+
+
+def animate_images(imgs, anim_path):
+    """
+    Args:
+     imgs: a tensor of shape (batch_size, 2, 50, 50)
+    """
+    fig, ax = plt.subplots(figsize=(6, 6))
+
+    def update(i):
+        ax.clear()
+        ax.imshow(imgs[i][1], cmap='gray')
+        ax.set_title(f'The Observable Scene at time step {i}')
+        ax.plot(25, 50, 'ro')  # Plot robot as a red dot at (25, 50)
+        ax.set_xlim(0, 50)
+        ax.set_ylim(0, 50)
+
+    ani = animation.FuncAnimation(
+        fig, update, frames=range(len(imgs)), interval=150)
+    plt.show()
+
+    # Save the animation
+    ani.save(anim_path, writer='ffmpeg', fps=6)
 
 
 def plot_losses(training_loss, img_path):
