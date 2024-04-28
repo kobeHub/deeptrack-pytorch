@@ -67,8 +67,8 @@ class DeepTrackingRNN(nn.Module):
         torch.save(ckpt, path)
 
     @classmethod
-    def from_pretrained(cls, path):
-        ckpt = torch.load(path)
+    def from_pretrained(cls, path, map_location=None):
+        ckpt = torch.load(path, map_location=map_location)
         config = ckpt['config']
         model = cls(config['width'], config['height'], config['num_units'])
         model.load_state_dict(ckpt['weight'])

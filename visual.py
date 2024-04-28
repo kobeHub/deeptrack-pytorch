@@ -19,22 +19,22 @@ def visual_one_sample(img):
     plt.show()
 
 
-def visual_multiple_samples(imgs):
+def visual_multiple_samples(imgs, title, dim=1, img_path=None):
     """
     Args:
      imgs: a tensor of shape (batch_size, 2, 50, 50)
     """
     # Create a 5x3 grid of subplots
     # Adjusted to 5x6 for two images per sample
-    fig, axs = plt.subplots(2, 5, figsize=(18, 10))
+    fig, axs = plt.subplots(2, 5, figsize=(20, 10))
     for i, img in enumerate(imgs):
         row = i // 5
         col = i % 5  # Multiply by 2 to leave space for the second channel
         print(f'Row: {row}, Col: {col}')
 
         # Display the first channel of the image
-        axs[row, col].imshow(img[1], cmap='gray')
-        axs[row, col].set_title(f'The Observable Scene at step {i}')
+        axs[row, col].imshow(img[dim], cmap='gray')
+        axs[row, col].set_title(f'{title} {i} Steps')
         axs[row, col].plot(25, 50, 'ro')  # Plot robot as a red dot at (25, 50)
         axs[row, col].set_xlim(0, 50)
         axs[row, col].set_ylim(0, 50)
@@ -49,10 +49,11 @@ def visual_multiple_samples(imgs):
 
     plt.tight_layout()
     plt.show()
-    fig.savefig('results/imgs/input_seq.png', dpi=300)
+    if img_path:
+        fig.savefig(img_path, dpi=300)
 
 
-def animate_images(imgs, anim_path):
+def animate_images(imgs, anim_path, title, dim=1):
     """
     Args:
      imgs: a tensor of shape (batch_size, 2, 50, 50)
@@ -61,8 +62,8 @@ def animate_images(imgs, anim_path):
 
     def update(i):
         ax.clear()
-        ax.imshow(imgs[i][1], cmap='gray')
-        ax.set_title(f'The Observable Scene at time step {i}')
+        ax.imshow(imgs[i][dim], cmap='gray')
+        ax.set_title(f'{title} {i} Steps')
         ax.plot(25, 50, 'ro')  # Plot robot as a red dot at (25, 50)
         ax.set_xlim(0, 50)
         ax.set_ylim(0, 50)

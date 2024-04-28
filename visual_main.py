@@ -36,7 +36,8 @@ def main(argv):
         # Visualize the first image in the batch
         if FLAGS.option == 'img':
             for j in range(0, 100, 20):
-                visual_multiple_samples(inputs[0, j:j+10, :, :, :])
+                visual_multiple_samples(
+                    inputs[0, j:j+10, :, :, :], title='Observable Scene at ', dim=1, img_path='results/imgs/sensor_data.png')
         elif FLAGS.option == 'anim':
             animate_images(targets[0], 'results/imgs/sensor_data.mp4')
         break

@@ -3,3 +3,4 @@ results/*.pt
 **pycache**
 results/epoch*
 results/*zip
+.DS_Store
