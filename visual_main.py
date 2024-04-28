@@ -37,7 +37,7 @@ def main(argv):
         if FLAGS.option == 'img':
             for j in range(0, 100, 20):
                 visual_multiple_samples(
-                    inputs[0, j:j+10, :, :, :], title='Observable Scene at ', dim=1, img_path='results/imgs/sensor_data.png')
+                    inputs[0, j+5:j+15, :, :, :], title='Observable Scene at', dim=1, img_path='results/imgs/sensor_data.png')
         elif FLAGS.option == 'anim':
             animate_images(targets[0], 'results/imgs/sensor_data.mp4')
         break
