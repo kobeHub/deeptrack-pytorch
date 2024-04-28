@@ -1,3 +1,5 @@
+import pathlib
+import config
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, Dataset
@@ -7,8 +9,7 @@ import pytorch_model_summary as pms
 from visual import plot_losses
 from data_utils import SensorData
 from model import DeepTrackingRNN
-import config
-import pathlib
+from criterion import WeightedBCELoss
 
 FLAGS = flags.FLAGS
 flags.DEFINE_string('data_file', './data/data.t7', 'Path to the data file')
@@ -20,7 +21,7 @@ def main(argv):
     del argv
     param = config.PARAM
     print(f'Parameters: {param}')
-    batch_size = 8
+    batch_size = 2
     epochs = 50
     seq_len = 100
     dataset = SensorData(FLAGS.data_file, param)
@@ -33,21 +34,19 @@ def main(argv):
     img_dir.mkdir(exist_ok=True, parents=True)
 
     model = DeepTrackingRNN(width=50, height=50, num_units=seq_len)
-    pms.summary(model, torch.zeros(batch_size, seq_len, 2, 50, 50),
-                batch_size=batch_size,
-                show_input=True,
-                show_hierarchical=True,
-                print_summary=True)
+    # pms.summary(model, torch.zeros(batch_size, seq_len, 2, 50, 50),
+    #             batch_size=batch_size,
+    #             show_input=True,
+    #             show_hierarchical=True,
+    #             print_summary=True)
     model.to(DEVICE)
-    criterion = torch.nn.BCELoss()
+    criterion = WeightedBCELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
     traing_loss = []
     for epoch in range(epochs):
         for batch_idx, data in enumerate(data_loader):
             inputs, targets = data
-            print(
-                f'Batch {batch_idx}: {inputs.shape}, targets: {targets.shape}')
             inputs = inputs.to(DEVICE)
             targets = targets.to(DEVICE)
 

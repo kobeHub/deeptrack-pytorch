@@ -21,7 +21,8 @@ class RecurrentUnit(nn.Module):
         return h1, y1
 
     def get_initial_state(self, batch_size=32):
-        return torch.randn(batch_size, 32, self.height, self.width)
+        return nn.init.kaiming_uniform_(torch.zeros(batch_size, 32, self.height, self.width))
+        # return torch.randn(batch_size, 32, self.height, self.width)
 
 
 class DeepTrackingRNN(nn.Module):
@@ -36,15 +37,23 @@ class DeepTrackingRNN(nn.Module):
         """
         X shape: B, S, C, H, W
         """
+        # print(f'The shape of x is {x.shape}')
         B, S, C, H, W = x.shape
-        x = x.view(-1, C, H, W)
-        h = self.step_module.get_initial_state(x.shape[0]).to(x.device)
+        assert S == self.num_units, f'Expected {self.num_units} steps, but got {S}'
+        h = self.step_module.get_initial_state(B).to(x.device)
         outputs = []
-        for _ in range(self.num_units):
-            h, y = self.step_module(x, h)
-            y = y.view(B, S, -1, self.height, self.width)
+        hiddens = []
+        for i in range(self.num_units):
+            input = x[:, i, :, :, :]
+            input = input.view(-1, C, H, W).contiguous()
+            h, y = self.step_module(input, h)
+            # print(f'y shape before view: {y.shape}')
+            y = y.view(B, 1, -1, self.height, self.width)
+            # print(
+            #     f'input shape: {input.shape}, h shape: {h.shape}, y shape: {y.shape}')
+
             outputs.append(y)
-        return torch.stack(outputs, dim=1)
+        return torch.stack(outputs, dim=1).view(B, S, -1, self.height, self.width)
 
     def save(self, path):
         ckpt = {
