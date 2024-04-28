@@ -71,7 +71,7 @@ def main(argv):
     np.save(model_dir / f"loss-epoch{epochs}.npy", traing_loss)
     model.save(model_dir / f"model-{epochs}.pth")
     plot_losses(traing_loss, img_dir / f"loss-{epochs}.png")
-    print(f'Model saved at {model_dir / f"model-{epochs}.pth"}')
+    print(f'Model saved at {model_dir / f"model-{epochs}.pt"}')
 
 
 if __name__ == "__main__":
